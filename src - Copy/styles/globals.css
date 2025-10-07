@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes infinite-scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(calc(-100% / 3));
+    }
+}
+
+@keyframes infinite-scroll-right {
+    0% {
+        transform: translateX(calc(-100% / 3));
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.animate-infinite-scroll-left {
+    animation: infinite-scroll-left linear infinite;
+    will-change: transform;
+}
+
+.animate-infinite-scroll-right {
+    animation: infinite-scroll-right linear infinite;
+    will-change: transform;
+}
+
+/* Pastikan animasi selalu smooth */
+.animate-infinite-scroll-left,
+.animate-infinite-scroll-right {
+    animation-delay: 0s;
+    animation-fill-mode: none;
+}
+
+/* Optimasi performa */
+.marquee-optimized {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .animate-infinite-scroll-left,
+    .animate-infinite-scroll-right {
+        animation: none;
+        transform: translateX(0);
+    }
+}
