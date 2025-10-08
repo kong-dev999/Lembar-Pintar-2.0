@@ -42,12 +42,12 @@ const Home = () => {
       <Hero />
       <Templateshow />
       <Pricing />
-      <Guides />
       <Fiture />
       <Testimonial />
       <QnA />
       <CallToAction />
       <Footer />
+      <Guides />
     </LandingLayout>
   );
 };

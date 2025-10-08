@@ -107,7 +107,13 @@ export default function Testimonial() {
   const visibleTestimonials = testimonials.slice(0, visibleCount);
 
   return (
-    <section className="relative w-full bg-gradient-to-b from-slate-50 to-white py-8 sm:py-12 md:py-12 lg:py-2">
+    <section
+      className="relative w-full bg-gradient-to-b from-slate-50 to-white py-8 sm:py-12 md:py-12 lg:py-2"
+      style={{
+        background:
+          'linear-gradient(180deg,#050610 5%, #22063a 25%, #2b0675ff 70%, #f7f7f7ff 100%)',
+      }}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <motion.div
@@ -117,14 +123,14 @@ export default function Testimonial() {
           viewport={{ once: true }}
           className="text-center"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
             Suara Pengguna{' '}
             <span className="bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
-              LembarPintar
+              Lembar Pintar
             </span>
           </h2>
-          <p className="mx-auto mt-3 sm:mt-4 max-w-2xl text-sm sm:text-base lg:text-lg text-slate-600">
-            Testimoni asli dari pendidik & kreator yang memakai LembarKerja
+          <p className="mx-auto mt-3 sm:mt-4 max-w-2xl text-sm sm:text-base lg:text-lg text-white">
+            Testimoni asli dari pendidik & kreator yang memakai Lembar Pintar
             setiap hari.
           </p>
         </motion.div>

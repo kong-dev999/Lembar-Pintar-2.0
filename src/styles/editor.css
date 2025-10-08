@@ -1,3 +1,43 @@
+/* Minimal editor.css to satisfy imports and provide base styles for editor components.
+   This file existed previously in other environments and some components import it.
+   Keep styles minimal to avoid interfering with global Tailwind styles. */
+
+/* Basic reset for editor container used by polotno or similar editors */
+.editor-root, .polotno-root, .editor-container {
+  box-sizing: border-box;
+  font-family: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure canvas/editor occupies available space when used in full-height layouts */
+.editor-root, .editor-canvas, .polotno-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Minimal toolbar styling to integrate with the existing design system */
+.editor-toolbar, .polotno-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Buttons inside editor toolbars */
+.editor-toolbar button, .polotno-toolbar button {
+  background: transparent;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}
+
+/* Prevent unexpected global overrides */
+:root {
+  --editor-bg: transparent;
+}
+
+/* small helper */
+.editor-hidden { display: none !important; }
 /* Reset Minimal */
 * {
     box-sizing: border-box;

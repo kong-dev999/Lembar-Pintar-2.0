@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   images: {
     remotePatterns: [
@@ -23,11 +25,7 @@ module.exports = {
       },
     ],
     // Legacy domains support (will be deprecated)
-    domains: [
-      'images.unsplash.com',
-      'cdn.pixabay.com',
-      'images.pexels.com',
-    ],
+    domains: ['images.unsplash.com', 'cdn.pixabay.com', 'images.pexels.com'],
   },
   reactStrictMode: true,
 
@@ -43,6 +41,12 @@ module.exports = {
 
   // Webpack config untuk Polotno (jika diperlukan)
   webpack: (config, { isServer }) => {
+    // Provide path alias so imports starting with `@/` resolve to `src/`
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      '@': path.resolve(__dirname, 'src'),
+      '@/prisma': path.resolve(__dirname, 'prisma'),
+    };
     // Polotno compatibility
     if (!isServer) {
       config.resolve.fallback = {

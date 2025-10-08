@@ -1,49 +1,64 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import React from "react";
+import Image from 'next/image';
+import React from 'react';
+import { SparklesText } from '@/components/ui/sparkles-text';
 
 /** ——— data bisa kamu ganti sesuai asetmu ——— */
 const ROWS = [
   {
-    dir: "left",   // kiri
-    duration: 60,  // diperlambat sedikit untuk lebih smooth
+    dir: 'left', // kiri
+    duration: 60, // diperlambat sedikit untuk lebih smooth
     items: [
-      { src: "/images/reels/reels03.png", alt: "Reels 1" },
-      { src: "/images/reels/reels04.png", alt: "Reels 2" },
-      { src: "/images/reels/reels05.png", alt: "Reels 3" },
-      { src: "/images/reels/reels09.png", alt: "Reels 4" },
-      { src: "/images/reels/reels10.png", alt: "Reels 5" },
-      { src: "/images/reels/reels02.png", alt: "Reels 6" },
+      { src: '/images/reels/reels03.png', alt: 'Reels 1' },
+      { src: '/images/reels/reels04.png', alt: 'Reels 2' },
+      { src: '/images/reels/reels05.png', alt: 'Reels 3' },
+      { src: '/images/reels/reels09.png', alt: 'Reels 4' },
+      { src: '/images/reels/reels10.png', alt: 'Reels 5' },
+      { src: '/images/reels/reels02.png', alt: 'Reels 6' },
     ],
   },
   {
-    dir: "right",  // kanan
+    dir: 'right', // kanan
     duration: 60,
     items: [
-      { src: "/images/reels/reels06.png", alt: "Reels 7" },
-      { src: "/images/reels/reels07.png", alt: "Reels 8" },
-      { src: "/images/reels/reels11.png", alt: "Reels 9" },
-      { src: "/images/reels/reels12.png", alt: "Reels 10" },
-      { src: "/images/reels/reels01.png", alt: "Reels 11" },
-      { src: "/images/reels/reels08.png", alt: "Reels 12" },
+      { src: '/images/reels/reels06.png', alt: 'Reels 7' },
+      { src: '/images/reels/reels07.png', alt: 'Reels 8' },
+      { src: '/images/reels/reels11.png', alt: 'Reels 9' },
+      { src: '/images/reels/reels12.png', alt: 'Reels 10' },
+      { src: '/images/reels/reels01.png', alt: 'Reels 11' },
+      { src: '/images/reels/reels08.png', alt: 'Reels 12' },
     ],
   },
 ];
 
 export default function TemplateShowcase() {
   return (
-    <section className="relative w-full py-16 sm:py-8 md:py-10">
-      <div className="mx-auto max-w-7xl px-6">
-        <h2 className="mb-10 text-center text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
-          Buat Materi, Iklan, atau Poster untuk sekolah dalam hitungan menit
-        </h2>
+    <section
+      className="relative w-full py-16 sm:py-8 md:py-6"
+      style={{
+        // top stop changed from near-black to a brighter purple to remove the black band
+        background:
+          'linear-gradient(180deg, #1f0940 0%, #4f15b3 85%, #4f15b3 85%, #1f0940 95%)',
+      }}
+    >
+      <div className="mx-auto max-w-7xl px-2">
+        <div className="mb-8 text-center">
+          <div className="inline-block">
+            <SparklesText
+              text={
+                'Buat Materi, Iklan, atau Poster untuk sekolah dalam hitungan menit'
+              }
+              className={
+                'text-2xl sm:text-3xl md:text-4xl font-extrabold flecha-medium tracking-tight text-white'
+              }
+            />
+          </div>
+        </div>
       </div>
 
       <div className="relative w-full">
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-blue-50 to-purple-500 shadow-sm -z-10" />
-
-        <div className="w-full py-8 md:py-12">
+        <div className="w-full py-8 md:py-6">
           <div className="w-full grid gap-10">
             {ROWS.map((row, i) => (
               <MarqueeRow
@@ -60,24 +75,26 @@ export default function TemplateShowcase() {
   );
 }
 
-function MarqueeRow({ items, direction = "left", duration = 40 }) {
+function MarqueeRow({ items, direction = 'left', duration = 40 }) {
   // Gunakan 3 set item untuk memastikan kontinuitas
   const tripled = [...items, ...items, ...items];
 
   return (
     <div className="group relative overflow-hidden">
-      {/* Gradient edges untuk transisi halus */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-blue-600 to-transparent z-10" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-blue-600 to-transparent z-10" />
+      {/* darker gradient edges to match background */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[#12021a] to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-[#12021a] to-transparent z-10" />
 
       {/* Container marquee */}
       <div
-        className={`flex ${direction === "left"
-          ? "animate-infinite-scroll-left"
-          : "animate-infinite-scroll-right"}`}
+        className={`flex ${
+          direction === 'left'
+            ? 'animate-infinite-scroll-left'
+            : 'animate-infinite-scroll-right'
+        }`}
         style={{
           animationDuration: `${duration}s`,
-          width: `${items.length * 320 * 3}px` // Lebar dinamis berdasarkan jumlah item
+          width: `${items.length * 320 * 3}px`, // Lebar dinamis berdasarkan jumlah item
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.animationPlayState = 'paused';
@@ -98,7 +115,7 @@ function Card({ src, alt }) {
   const [imgError, setImgError] = React.useState(false);
 
   return (
-    <div className="mx-3 shrink-0 overflow-hidden rounded-xl bg-white ring-1 ring-black/5 shadow-lg transition-transform duration-300 hover:scale-105">
+    <div className="mx-3 shrink-0 overflow-hidden rounded-xl bg-white/10 ring-1 ring-white/10 shadow-lg transition-transform duration-300 hover:scale-105">
       <div className="h-[180px] w-[380px] md:h-[200px] md:w-[420px] relative">
         {!imgError ? (
           <Image
@@ -110,8 +127,8 @@ function Card({ src, alt }) {
             onError={() => setImgError(true)}
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
-            <span className="text-slate-700 font-medium text-lg">{alt}</span>
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent to-transparent flex items-center justify-center">
+            <span className="text-white font-medium text-lg">{alt}</span>
           </div>
         )}
       </div>
