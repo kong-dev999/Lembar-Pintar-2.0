@@ -5,6 +5,8 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import StarButton from '@/components/ui/star-button';
+import { Particles } from '@/components/ui/particles';
 
 const Hero = () => {
   const [showMenu, setMenuVisibility] = useState(false);
@@ -111,18 +113,25 @@ const Hero = () => {
       className="relative overflow-hidden"
       style={{
         background:
-          'linear-gradient(180deg,#050610 0%, #22063a 36%, #6b22ff 70%, #3b0a66 100%)',
+          'linear-gradient(180deg,#050610 0%, #22063a 26%,#6b22ff 50%, #6b22ff 70%, #3b0a66 100%)',
       }}
     >
       {/* full-bleed overlays so gradient/rays/vignette span the full width */}
       <div className="hero-overlay">
+        <Particles className="absolute inset-0" />
         <div className="hero-rays" />
         <div className="hero-vignette" />
       </div>
       {/* NAV */}
       <div
-        className="fixed top-0 left-0 w-full z-50 bg-white bg-opacity-500 backdrop-blur-sm shadow-sm border-b border-gray-200"
-        style={{ top: '0px', paddingBottom: '10px' }}
+        className="fixed top-0 left-0 w-full z-50 shadow-sm"
+        style={{
+          top: '0px',
+          paddingBottom: '10px',
+          background: showTopGradient
+            ? 'transparent'
+            : 'linear-gradient(180deg, #040432ff 42%, #4a0db4ff 95%)',
+        }}
       >
         <div className="mx-auto max-w-7xl px-6 pt-1 lg:px-8">
           <header className="flex items-center justify-between roobert-mono">
@@ -134,7 +143,7 @@ const Hero = () => {
               <div className="relative w-[40px] h-[40px] md:w-[60px] md:h-[60px] shrink-0 p-2 bg-transparent rounded-lg">
                 <Image
                   src="/images/logo.png"
-                  alt="Logo LembarPinter"
+                  alt="Logo LembarPintar"
                   fill
                   sizes="180px"
                   className="object-contain object-center !max-w-none"
@@ -143,9 +152,9 @@ const Hero = () => {
               </div>
               {/* Brand text */}
               <span className="leading-none -ml-1 mt-4">
-                <span className="block text-[22px] md:text-[28px] font-extrabold tracking-tight text-slate-900 dark:text-black">
+                <span className="block text-[22px] md:text-[28px] font-extrabold tracking-tight text-white">
                   Lembar{' '}
-                  <span className="bg-gradient-to-r from-blue-800 to-indigo-500 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r bg-clip-text text-white">
                     Pintar
                   </span>
                 </span>
@@ -180,7 +189,7 @@ const Hero = () => {
                 >
                   <a
                     href="#QnA"
-                    className={`rounded px-5 py-2 transition-colors cursor-pointer ${activeNav === 'KasusPenggunaan' ? 'bg-gradient-to-r from-blue-800 to-indigo-500 text-white' : ''} hover:bg-gradient-to-r hover:from-blue-800 hover:to-indigo-500 hover:text-white mt-2 md:mt-0`}
+                    className={`rounded px-5 py-2 transition-colors cursor-pointer text-white ${activeNav === 'KasusPenggunaan' ? 'bg-white/10 text-white' : ''} hover:bg-white/10 hover:text-white mt-2 md:mt-0`}
                     onClick={(e) => {
                       e.preventDefault();
                       setActiveNav('KasusPenggunaan');
@@ -208,7 +217,7 @@ const Hero = () => {
                   style={{ display: 'inline-flex' }}
                 >
                   <button
-                    className={`rounded px-5 py-2 transition-colors flex items-center justify-center focus:outline-none bg-transparent text-slate-900 border border-transparent group ${activeNav === 'template' ? 'bg-gradient-to-r from-blue-800 to-indigo-500 text-white' : ''} hover:bg-blue-800 hover:text-white`}
+                    className={`rounded px-5 py-2 transition-colors flex items-center justify-center focus:outline-none bg-transparent text-white border border-transparent group ${activeNav === 'template' ? 'bg-white/10 text-white' : ''} hover:bg-white/10 hover:text-white mt-2 md:mt-0`}
                     type="button"
                     ref={templateButtonRef}
                     onClick={() => {
@@ -225,7 +234,7 @@ const Hero = () => {
                     Template
                     <svg
                       className={[
-                        'ml-1 h-4 w-4 text-slate-900 group-hover:text-white transform transition-transform duration-200',
+                        'ml-1 h-4 w-4 text-white group-hover:text-white transform transition-transform duration-200',
                         activeDropdown === 'template'
                           ? 'rotate-180'
                           : 'rotate-0',
@@ -271,7 +280,7 @@ const Hero = () => {
                         </li>
                         <li className="relative">
                           <button
-                            className="w-full flex items-center justify-between px-4 py-3 font-semibold border-b border-gray-100 hover:bg-blue-800 hover:text-white rounded focus:outline-none"
+                            className="w-full flex items-center justify-between px-4 py-3 font-semibold border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded focus:outline-none"
                             onClick={() =>
                               setActiveSubmenu(
                                 activeSubmenu === 'sd' ? null : 'sd'
@@ -299,7 +308,7 @@ const Hero = () => {
                                 <li>
                                   <Link
                                     href="/kelas/SD/1"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-blue-800 hover:text-white rounded-t-xl"
+                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded-t-xl"
                                   >
                                     Kelas 1
                                   </Link>
@@ -307,7 +316,7 @@ const Hero = () => {
                                 <li>
                                   <Link
                                     href="/kelas/SD/2"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-blue-800 hover:text-white rounded"
+                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded"
                                   >
                                     Kelas 2
                                   </Link>
@@ -315,7 +324,7 @@ const Hero = () => {
                                 <li>
                                   <Link
                                     href="/kelas/SD/3"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-blue-800 hover:text-white rounded"
+                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded"
                                   >
                                     Kelas 3
                                   </Link>
@@ -323,7 +332,7 @@ const Hero = () => {
                                 <li>
                                   <Link
                                     href="/kelas/SD/4"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-blue-800 hover:text-white rounded"
+                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded"
                                   >
                                     Kelas 4
                                   </Link>
@@ -339,7 +348,7 @@ const Hero = () => {
                                 <li>
                                   <Link
                                     href="/kelas/SD/6"
-                                    className="block w-full px-4 py-2 text-center hover:bg-blue-800 hover:text-white rounded-b-xl"
+                                    className="block w-full px-4 py-2 text-center hover:bg-[#5e21df] hover:text-white rounded-b-xl"
                                   >
                                     Kelas 6
                                   </Link>
@@ -350,7 +359,7 @@ const Hero = () => {
                         </li>
                         <li className="relative">
                           <button
-                            className="w-full flex items-center justify-between px-4 py-3 font-semibold border-b border-gray-100 hover:bg-blue-800 hover:text-white rounded focus:outline-none"
+                            className="w-full flex items-center justify-between px-4 py-3 font-semibold border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded focus:outline-none"
                             onClick={() =>
                               setActiveSubmenu(
                                 activeSubmenu === 'smp' ? null : 'smp'
@@ -378,7 +387,7 @@ const Hero = () => {
                                 <li>
                                   <Link
                                     href="/kelas/SMP/7"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-blue-800 hover:text-white rounded-t-xl"
+                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded-t-xl"
                                   >
                                     Kelas 7
                                   </Link>
@@ -386,7 +395,7 @@ const Hero = () => {
                                 <li>
                                   <Link
                                     href="/kelas/SMP/8"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-blue-800 hover:text-white"
+                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white"
                                   >
                                     Kelas 8
                                   </Link>
@@ -394,7 +403,7 @@ const Hero = () => {
                                 <li>
                                   <Link
                                     href="/kelas/SMP/9"
-                                    className="block w-full px-4 py-2 text-center hover:bg-blue-800 hover:text-white rounded-b-xl"
+                                    className="block w-full px-4 py-2 text-center hover:bg-[#5e21df] hover:text-white rounded-b-xl"
                                   >
                                     Kelas 9
                                   </Link>
@@ -405,7 +414,7 @@ const Hero = () => {
                         </li>
                         <li className="relative">
                           <button
-                            className="w-full flex items-center justify-between px-4 py-3 font-semibold hover:bg-blue-800 hover:text-white rounded focus:outline-none"
+                            className="w-full flex items-center justify-between px-4 py-3 font-semibold hover:bg-[#5e21df] hover:text-white rounded focus:outline-none"
                             onClick={() =>
                               setActiveSubmenu(
                                 activeSubmenu === 'sma' ? null : 'sma'
@@ -433,7 +442,7 @@ const Hero = () => {
                                 <li>
                                   <Link
                                     href="/kelas/SMA/10"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-blue-800 hover:text-white rounded-t-xl"
+                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded-t-xl"
                                   >
                                     Kelas 10
                                   </Link>
@@ -441,7 +450,7 @@ const Hero = () => {
                                 <li>
                                   <Link
                                     href="/kelas/SMA/11"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-blue-800 hover:text-white"
+                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white"
                                   >
                                     Kelas 11
                                   </Link>
@@ -449,7 +458,7 @@ const Hero = () => {
                                 <li>
                                   <Link
                                     href="/kelas/SMA/12"
-                                    className="block w-full px-4 py-2 text-center hover:bg-blue-800 hover:text-white rounded-b-xl"
+                                    className="block w-full px-4 py-2 text-center hover:bg-[#5e21df] hover:text-white rounded-b-xl"
                                   >
                                     Kelas 12
                                   </Link>
@@ -464,7 +473,7 @@ const Hero = () => {
                 </div>
                 <a
                   href="#fitur"
-                  className={`rounded px-5 py-2 transition-colors cursor-pointer ${activeNav === 'fitur' ? 'bg-gradient-to-r from-blue-800 to-indigo-500 text-white' : ''} hover:bg-gradient-to-r hover:from-blue-800 hover:to-indigo-500 hover:text-white mt-2 md:mt-0`}
+                  className={`rounded px-5 py-2 transition-colors cursor-pointer text-white ${activeNav === 'fitur' ? 'bg-white/10 text-white' : ''} hover:bg-white/10 hover:text-white mt-2 md:mt-0`}
                   onClick={(e) => {
                     e.preventDefault();
                     setActiveNav('fitur');
@@ -486,7 +495,7 @@ const Hero = () => {
                 </a>
                 <a
                   href="#harga"
-                  className={`rounded px-5 py-2 transition-colors cursor-pointer ${activeNav === 'harga' ? 'bg-gradient-to-r from-blue-800 to-indigo-500 text-white' : ''} hover:bg-gradient-to-r hover:from-blue-800 hover:to-indigo-500 hover:text-white mt-2 md:mt-0`}
+                  className={`rounded px-5 py-2 transition-colors cursor-pointer text-white ${activeNav === 'harga' ? 'bg-white/10 text-white' : ''} hover:bg-white/10 hover:text-white mt-2 md:mt-0`}
                   onClick={(e) => {
                     e.preventDefault();
                     setActiveNav('harga');
@@ -510,7 +519,7 @@ const Hero = () => {
                   style={{ display: 'inline-flex' }}
                 >
                   <button
-                    className={`rounded px-5 py-2 transition-colors flex items-center justify-center focus:outline-none bg-transparent text-slate-900 border border-transparent group ${activeNav === 'pelajari' ? 'bg-gradient-to-r from-blue-800 to-indigo-500 text-white' : ''} hover:bg-blue-800 hover:text-white`}
+                    className={`rounded px-5 py-2 transition-colors flex items-center justify-center focus:outline-none bg-transparent text-white border border-transparent group ${activeNav === 'pelajari' ? 'bg-white/10 text-white' : ''} hover:bg-white/10 hover:text-white mt-2 md:mt-0`}
                     type="button"
                     onClick={() => {
                       setActiveDropdown(
@@ -526,7 +535,7 @@ const Hero = () => {
                     Pelajari
                     <svg
                       className={[
-                        'ml-1 h-4 w-4 text-slate-900 group-hover:text-white transform transition-transform duration-200',
+                        'ml-1 h-4 w-4 text-white group-hover:text-white transform transition-transform duration-200',
                         activeDropdown === 'pelajari'
                           ? 'rotate-180'
                           : 'rotate-0',
@@ -594,36 +603,21 @@ const Hero = () => {
               <div className="flex space-x-3">
                 <a
                   href="/auth/login"
-                  className="rounded border border-blue-600 px-5 py-2 text-blue-600 hover:bg-blue-50"
+                  className="rounded border border-white-600 px-5 py-2 text-white"
                 >
                   Masuk
                 </a>
-                <a
+                <StarButton
                   href="/auth/register"
-                  className="rounded bg-gradient-to-r from-blue-800 to-indigo-500 px-5 py-2 text-white hover:from-purple-600 hover:to-pink-600 hover:text-white"
+                  className="rounded border border-white/40 border-[1px] px-3 py-1.5 text-base"
+                  disableStars
                 >
                   Coba Gratis
-                </a>
+                </StarButton>
               </div>
             </div>
           </header>
         </div>
-
-        {/* HERO CONTENT */}
-        {/* subtle white -> transparent gradient strip under the navbar to blend into hero */}
-        {showTopGradient && (
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-0 right-0"
-            style={{
-              height: '68px',
-              top: '64px',
-              background:
-                'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.85) 20%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%)',
-              zIndex: 40,
-            }}
-          />
-        )}
       </div>
       <div
         className="mx-auto max-w-7xl px-6 lg:px-8"
@@ -680,24 +674,14 @@ const Hero = () => {
                 </motion.p>
 
                 <motion.div className="mt-8 flex flex-wrap gap-4">
-                  <motion.a
-                    href="/auth/register"
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="inline-flex items-center justify-center rounded-lg bg-white px-6 py-3 text-base font-semibold text-slate-900 shadow hover:brightness-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 no-underline"
-                    style={{ textDecoration: 'none' }}
-                  >
-                    Mulai Gratis Sekarang
-                  </motion.a>
-                  <motion.a
-                    href="/demo"
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="inline-flex items-center justify-center rounded-lg border border-white/30 px-6 py-3 text-base font-semibold text-white hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 no-underline hover:text-white"
-                    style={{ textDecoration: 'none' }}
-                  >
-                    Lihat Contoh Template
-                  </motion.a>
+                  <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                    <StarButton href="/demo">Lihat Contoh Template</StarButton>
+                  </motion.div>
+                  <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                    <StarButton href="/auth/register">
+                      Mulai Gratis Sekarang
+                    </StarButton>
+                  </motion.div>
                 </motion.div>
 
                 <motion.div className="mt-10 flex items-center gap-4">

@@ -4,5 +4,3 @@
 import prisma from '../../prisma/index.js';
 
 export default prisma;
-// Re-export prisma from project root for imports using '@/prisma'
-export { default } from '../../../prisma/index.js';

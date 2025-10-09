@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { CheckIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { Particles } from '@/components/ui/particles';
 
 const plans = (yearly) => [
   {
@@ -99,16 +100,17 @@ export default function Pricing() {
       }}
     >
       <div className="max-w-6xl mx-auto px-6">
+        <Particles className="absolute inset-0" />
         <div className="text-center mb-8 space-y-4 md:space-y-4">
           <span className="inline-flex items-center rounded-full bg-white text-black px-4 py-1.5 text-sm font-semibold uppercase tracking-wide">
             Harga Termurah di Kelasnya
           </span>
           <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl ">
-            Pilih paket yang pas untuk Mengajar & Berkarya
+            Tentukan Paket yang sesuai kebutuhan dalam Mengajar dan Berkarya
           </h2>
           <p className="text-gray-300">
-            Fokus ke materi & hasil. Kami yang urus template, brand kit,
-            kolaborasi, dan AI assist.
+            Fokus pada materi dan hasil pembelajaran. Biarkan kami yang mengurus
+            desain, identitas merek, desain visual lainnya
           </p>
         </div>
 

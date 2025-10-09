@@ -10,24 +10,24 @@ const ROWS = [
     dir: 'left', // kiri
     duration: 60, // diperlambat sedikit untuk lebih smooth
     items: [
-      { src: '/images/reels/reels03.png', alt: 'Reels 1' },
-      { src: '/images/reels/reels04.png', alt: 'Reels 2' },
-      { src: '/images/reels/reels05.png', alt: 'Reels 3' },
-      { src: '/images/reels/reels09.png', alt: 'Reels 4' },
-      { src: '/images/reels/reels10.png', alt: 'Reels 5' },
-      { src: '/images/reels/reels02.png', alt: 'Reels 6' },
+      { src: '/images/reels/reels01.png', alt: 'Reels 1' },
+      { src: '/images/reels/reels02.png', alt: 'Reels 2' },
+      { src: '/images/reels/reels03.png', alt: 'Reels 3' },
+      { src: '/images/reels/reels04.png', alt: 'Reels 4' },
+      { src: '/images/reels/reels05.png', alt: 'Reels 5' },
+      { src: '/images/reels/reels06.png', alt: 'Reels 6' },
     ],
   },
   {
     dir: 'right', // kanan
     duration: 60,
     items: [
-      { src: '/images/reels/reels06.png', alt: 'Reels 7' },
-      { src: '/images/reels/reels07.png', alt: 'Reels 8' },
-      { src: '/images/reels/reels11.png', alt: 'Reels 9' },
-      { src: '/images/reels/reels12.png', alt: 'Reels 10' },
-      { src: '/images/reels/reels01.png', alt: 'Reels 11' },
-      { src: '/images/reels/reels08.png', alt: 'Reels 12' },
+      { src: '/images/reels/reels07.png', alt: 'Reels 7' },
+      { src: '/images/reels/reels08.png', alt: 'Reels 8' },
+      { src: '/images/reels/reels09.png', alt: 'Reels 9' },
+      { src: '/images/reels/reels10.png', alt: 'Reels 10' },
+      { src: '/images/reels/reels11.png', alt: 'Reels 11' },
+      { src: '/images/reels/reels12.png', alt: 'Reels 12' },
     ],
   },
 ];
@@ -37,9 +37,8 @@ export default function TemplateShowcase() {
     <section
       className="relative w-full py-16 sm:py-8 md:py-6"
       style={{
-        // top stop changed from near-black to a brighter purple to remove the black band
         background:
-          'linear-gradient(180deg, #1f0940 0%, #4f15b3 85%, #4f15b3 85%, #1f0940 95%)',
+          'linear-gradient(180deg, #1f0940 20%, #660dffff 42%, #040432ff 60%, #660dffff 78%, #1f0940 95%)',
       }}
     >
       <div className="mx-auto max-w-7xl px-2">
@@ -47,7 +46,7 @@ export default function TemplateShowcase() {
           <div className="inline-block">
             <SparklesText
               text={
-                'Buat Materi, Iklan, atau Poster untuk sekolah dalam hitungan menit'
+                'Buat Materi, Poster, dan Ciptakan Karya Sekolahmu Sendiri dalam Hitungan Menit'
               }
               className={
                 'text-2xl sm:text-3xl md:text-4xl font-extrabold flecha-medium tracking-tight text-white'
