@@ -13,6 +13,7 @@ const Hero = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [activeSubmenu, setActiveSubmenu] = useState(null);
   const [activeNav, setActiveNav] = useState(null);
+  const [suppressNavHover, setSuppressNavHover] = useState(false);
   const closeTimeoutRef = useRef(null);
   const submenuCloseTimeoutRef = useRef(null);
 
@@ -42,6 +43,8 @@ const Hero = () => {
     }
     setActiveDropdown(name);
     setActiveNav(name === 'template' || name === 'pelajari' ? name : activeNav);
+    // when opening template/pelajari, suppress hover on other nav items
+    if (name === 'template' || name === 'pelajari') setSuppressNavHover(true);
   };
   const closeDropdown = (name) => {
     // schedule a short delay before closing so users can move pointer into the menu
@@ -50,6 +53,9 @@ const Hero = () => {
       if (activeDropdown === name) {
         setActiveDropdown(null);
         setActiveSubmenu(null);
+        // closing template/pelajari should re-enable hover
+        if (name === 'template' || name === 'pelajari')
+          setSuppressNavHover(false);
       }
       closeTimeoutRef.current = null;
     }, 150);
@@ -82,6 +88,7 @@ const Hero = () => {
       ) {
         setActiveDropdown(null);
         setActiveSubmenu(null);
+        setSuppressNavHover(false);
       }
     }
 
@@ -89,6 +96,7 @@ const Hero = () => {
       if (e.key === 'Escape') {
         setActiveDropdown(null);
         setActiveSubmenu(null);
+        setSuppressNavHover(false);
       }
     }
 
@@ -166,9 +174,9 @@ const Hero = () => {
               aria-label="Toggle menu"
             >
               {showMenu ? (
-                <XMarkIcon className="h-8 w-8" />
+                <XMarkIcon className="h-8 w-8 text-white" />
               ) : (
-                <Bars3Icon className="h-8 w-8" />
+                <Bars3Icon className="h-8 w-8 text-white" />
               )}
             </button>
             <div
@@ -189,7 +197,7 @@ const Hero = () => {
                 >
                   <a
                     href="#QnA"
-                    className={`rounded px-5 py-2 transition-colors cursor-pointer text-white ${activeNav === 'KasusPenggunaan' ? 'bg-white/10 text-white' : ''} hover:bg-white/10 hover:text-white mt-2 md:mt-0`}
+                    className={`rounded px-5 py-2 transition-colors cursor-pointer ${showMenu ? 'text-black' : 'text-white'} ${activeNav === 'KasusPenggunaan' ? (showMenu ? 'bg-white/10 text-black' : 'bg-white/10 text-white') : ''} ${suppressNavHover ? '' : showMenu ? 'hover:bg-white/10 hover:text-black' : 'hover:bg-white/10 hover:text-white'} mt-2 md:mt-0`}
                     onClick={(e) => {
                       e.preventDefault();
                       setActiveNav('KasusPenggunaan');
@@ -217,7 +225,7 @@ const Hero = () => {
                   style={{ display: 'inline-flex' }}
                 >
                   <button
-                    className={`rounded px-5 py-2 transition-colors flex items-center justify-center focus:outline-none bg-transparent text-white border border-transparent group ${activeNav === 'template' ? 'bg-white/10 text-white' : ''} hover:bg-white/10 hover:text-white mt-2 md:mt-0`}
+                    className={`rounded px-5 py-2 transition-colors flex items-center justify-center focus:outline-none bg-transparent ${showMenu ? 'text-black' : 'text-white'} border border-transparent group mt-2 md:mt-0 ${activeDropdown === 'template' ? (showMenu ? 'bg-white/10 text-black' : 'bg-white/10 text-white') : ''}`}
                     type="button"
                     ref={templateButtonRef}
                     onClick={() => {
@@ -226,15 +234,38 @@ const Hero = () => {
                       );
                       setActiveNav('template');
                     }}
-                    onMouseEnter={() => openDropdown('template')}
-                    onMouseLeave={() => closeDropdown('template')}
-                    onFocus={() => openDropdown('template')}
-                    onBlur={() => closeDropdown('template')}
+                    onMouseEnter={
+                      typeof window !== 'undefined' && window.innerWidth >= 768
+                        ? () => {
+                            setSuppressNavHover(true);
+                            openDropdown('template');
+                          }
+                        : undefined
+                    }
+                    onMouseLeave={
+                      typeof window !== 'undefined' && window.innerWidth >= 768
+                        ? () => {
+                            setSuppressNavHover(false);
+                            closeDropdown('template');
+                          }
+                        : undefined
+                    }
+                    onFocus={
+                      typeof window !== 'undefined' && window.innerWidth >= 768
+                        ? () => openDropdown('template')
+                        : undefined
+                    }
+                    onBlur={
+                      typeof window !== 'undefined' && window.innerWidth >= 768
+                        ? () => closeDropdown('template')
+                        : undefined
+                    }
                   >
                     Template
                     <svg
                       className={[
-                        'ml-1 h-4 w-4 text-white group-hover:text-white transform transition-transform duration-200',
+                        'ml-1 h-4 w-4 transform transition-transform duration-200',
+                        showMenu ? 'text-black' : 'text-white',
                         activeDropdown === 'template'
                           ? 'rotate-180'
                           : 'rotate-0',
@@ -252,31 +283,59 @@ const Hero = () => {
                   {activeDropdown === 'template' && (
                     <div
                       ref={dropdownRef}
-                      className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-64 rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
+                      className="absolute left-1/2 transform -translate-x-1/2 mt-2 min-w-fit w-auto rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
                       style={{ borderRadius: '1rem', top: '100%' }}
                       onMouseEnter={() => {
                         if (closeTimeoutRef.current) {
                           clearTimeout(closeTimeoutRef.current);
                           closeTimeoutRef.current = null;
                         }
+                        setSuppressNavHover(true);
                       }}
-                      onMouseLeave={() => closeDropdown('template')}
+                      onMouseLeave={() => {
+                        setSuppressNavHover(false);
+                        closeDropdown('template');
+                      }}
                     >
                       <ul className="py-2 px-2 text-center">
                         <li className="relative">
                           <button
-                            className="w-full flex items-center justify-between px-4 py-3 font-semibold hover:bg-slate-50 rounded-t-xl focus:outline-none"
+                            className="w-full flex items-center justify-between px-4 py-3 font-semibold border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded-t-xl focus:outline-none"
                             onClick={() =>
                               setActiveSubmenu(
-                                activeSubmenu === 'PT' ? null : ''
+                                activeSubmenu === 'tk' ? null : 'tk'
                               )
                             }
+                            onMouseEnter={() => {
+                              cancelCloseSubmenu();
+                              setActiveSubmenu('tk');
+                            }}
+                            onMouseLeave={() => scheduleCloseSubmenu()}
                           >
-                            <span className="w-full text-center">
-                              {' '}
-                              Taman Kanak-Kanak (TK)
-                            </span>
+                            <span className="w-full text-center">TK</span>
                           </button>
+                          {activeSubmenu === 'tk' && (
+                            <div
+                              className="absolute top-0 left-full ml-2 min-w-fit w-auto rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
+                              style={{ borderRadius: '1rem' }}
+                              onMouseEnter={() => cancelCloseSubmenu()}
+                              onMouseLeave={() => scheduleCloseSubmenu()}
+                            >
+                              <ul className="py-2 px-2 text-center min-w-fit w-auto">
+                                {['A', 'B'].map((kelas, idx) => (
+                                  <li key={kelas}>
+                                    <Link
+                                      href={`/kelas/SMP/${kelas}`}
+                                      className={`flex items-center justify-center w-auto min-w-fit px-4 py-2 text-center ${idx === 0 ? 'rounded-t-xl' : ''} ${idx === 1 ? 'rounded-b-xl' : ''} border-b border-gray-100 hover:bg-[#5e21df] hover:text-white`}
+                                    >
+                                      <span>Kelas</span>
+                                      <span className="ml-2">{kelas}</span>
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
                         </li>
                         <li className="relative">
                           <button
@@ -292,67 +351,27 @@ const Hero = () => {
                             }}
                             onMouseLeave={() => scheduleCloseSubmenu()}
                           >
-                            <span className="w-full text-center">
-                              Sekolah Dasar (SD)
-                            </span>
-                            {/* chevron removed */}
+                            <span className="w-full text-center">SD</span>
                           </button>
                           {activeSubmenu === 'sd' && (
                             <div
-                              className="absolute top-0 left-full ml-2 w-48 rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
+                              className="absolute top-0 left-full ml-2 min-w-fit w-auto rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
                               style={{ borderRadius: '1rem' }}
                               onMouseEnter={() => cancelCloseSubmenu()}
                               onMouseLeave={() => scheduleCloseSubmenu()}
                             >
-                              <ul className="py-2 px-2 text-center">
-                                <li>
-                                  <Link
-                                    href="/kelas/SD/1"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded-t-xl"
-                                  >
-                                    Kelas 1
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href="/kelas/SD/2"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded"
-                                  >
-                                    Kelas 2
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href="/kelas/SD/3"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded"
-                                  >
-                                    Kelas 3
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href="/kelas/SD/4"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded"
-                                  >
-                                    Kelas 4
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href="/kelas/SD/5"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-blue-800 hover:text-white rounded"
-                                  >
-                                    Kelas 5
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href="/kelas/SD/6"
-                                    className="block w-full px-4 py-2 text-center hover:bg-[#5e21df] hover:text-white rounded-b-xl"
-                                  >
-                                    Kelas 6
-                                  </Link>
-                                </li>
+                              <ul className="py-2 px-2 text-center min-w-fit w-auto">
+                                {[1, 2, 3, 4, 5, 6].map((kelas) => (
+                                  <li key={kelas}>
+                                    <Link
+                                      href={`/kelas/SD/${kelas}`}
+                                      className={`flex items-center justify-center w-auto min-w-fit px-4 py-2 text-center ${kelas === 1 ? 'rounded-t-xl' : ''} ${kelas === 6 ? 'rounded-b-xl' : ''} border-b border-gray-100 hover:bg-[#5e21df] hover:text-white`}
+                                    >
+                                      <span>Kelas</span>
+                                      <span className="ml-2">{kelas}</span>
+                                    </Link>
+                                  </li>
+                                ))}
                               </ul>
                             </div>
                           )}
@@ -371,50 +390,34 @@ const Hero = () => {
                             }}
                             onMouseLeave={() => scheduleCloseSubmenu()}
                           >
-                            <span className="w-full text-center">
-                              Sekolah Menengah Pertama (SMP)
-                            </span>
-                            {/* chevron removed */}
+                            <span className="w-full text-center">SMP</span>
                           </button>
                           {activeSubmenu === 'smp' && (
                             <div
-                              className="absolute top-0 left-full ml-2 w-48 rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
+                              className="absolute top-0 left-full ml-2 min-w-fit w-auto rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
                               style={{ borderRadius: '1rem' }}
                               onMouseEnter={() => cancelCloseSubmenu()}
                               onMouseLeave={() => scheduleCloseSubmenu()}
                             >
-                              <ul className="py-2 px-2 text-center">
-                                <li>
-                                  <Link
-                                    href="/kelas/SMP/7"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded-t-xl"
-                                  >
-                                    Kelas 7
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href="/kelas/SMP/8"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white"
-                                  >
-                                    Kelas 8
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href="/kelas/SMP/9"
-                                    className="block w-full px-4 py-2 text-center hover:bg-[#5e21df] hover:text-white rounded-b-xl"
-                                  >
-                                    Kelas 9
-                                  </Link>
-                                </li>
+                              <ul className="py-2 px-2 text-center min-w-fit w-auto">
+                                {[7, 8, 9].map((kelas) => (
+                                  <li key={kelas}>
+                                    <Link
+                                      href={`/kelas/SMP/${kelas}`}
+                                      className={`flex items-center justify-center w-auto min-w-fit px-4 py-2 text-center ${kelas === 7 ? 'rounded-t-xl' : ''} ${kelas === 9 ? 'rounded-b-xl' : ''} border-b border-gray-100 hover:bg-[#5e21df] hover:text-white`}
+                                    >
+                                      <span>Kelas</span>
+                                      <span className="ml-2">{kelas}</span>
+                                    </Link>
+                                  </li>
+                                ))}
                               </ul>
                             </div>
                           )}
                         </li>
                         <li className="relative">
                           <button
-                            className="w-full flex items-center justify-between px-4 py-3 font-semibold hover:bg-[#5e21df] hover:text-white rounded focus:outline-none"
+                            className="w-full flex items-center justify-between px-4 py-3 font-semibold hover:bg-[#5e21df] hover:text-white rounded-b-xl focus:outline-none"
                             onClick={() =>
                               setActiveSubmenu(
                                 activeSubmenu === 'sma' ? null : 'sma'
@@ -426,43 +429,27 @@ const Hero = () => {
                             }}
                             onMouseLeave={() => scheduleCloseSubmenu()}
                           >
-                            <span className="w-full text-center">
-                              Sekolah Menengah <br></br>Atas (SMA)
-                            </span>
-                            {/* chevron removed */}
+                            <span className="w-full text-center">SMA</span>
                           </button>
                           {activeSubmenu === 'sma' && (
                             <div
-                              className="absolute top-0 left-full ml-2 w-48 rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
+                              className="absolute top-0 left-full ml-2 min-w-fit w-auto rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
                               style={{ borderRadius: '1rem' }}
                               onMouseEnter={() => cancelCloseSubmenu()}
                               onMouseLeave={() => scheduleCloseSubmenu()}
                             >
-                              <ul className="py-2 px-2 text-center">
-                                <li>
-                                  <Link
-                                    href="/kelas/SMA/10"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded-t-xl"
-                                  >
-                                    Kelas 10
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href="/kelas/SMA/11"
-                                    className="block w-full px-4 py-2 text-center border-b border-gray-100 hover:bg-[#5e21df] hover:text-white"
-                                  >
-                                    Kelas 11
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href="/kelas/SMA/12"
-                                    className="block w-full px-4 py-2 text-center hover:bg-[#5e21df] hover:text-white rounded-b-xl"
-                                  >
-                                    Kelas 12
-                                  </Link>
-                                </li>
+                              <ul className="py-2 px-2 text-center min-w-fit w-auto">
+                                {[10, 11, 12].map((kelas) => (
+                                  <li key={kelas}>
+                                    <Link
+                                      href={`/kelas/SMA/${kelas}`}
+                                      className={`flex items-center justify-center w-auto min-w-fit px-4 py-2 text-center ${kelas === 10 ? 'rounded-t-xl' : ''} ${kelas === 12 ? 'rounded-b-xl' : ''} border-b border-gray-100 hover:bg-[#5e21df] hover:text-white`}
+                                    >
+                                      <span>Kelas</span>
+                                      <span className="ml-2">{kelas}</span>
+                                    </Link>
+                                  </li>
+                                ))}
                               </ul>
                             </div>
                           )}
@@ -473,7 +460,7 @@ const Hero = () => {
                 </div>
                 <a
                   href="#fitur"
-                  className={`rounded px-5 py-2 transition-colors cursor-pointer text-white ${activeNav === 'fitur' ? 'bg-white/10 text-white' : ''} hover:bg-white/10 hover:text-white mt-2 md:mt-0`}
+                  className={`rounded px-5 py-2 transition-colors cursor-pointer ${showMenu ? 'text-black' : 'text-white'} ${activeNav === 'fitur' ? (showMenu ? 'bg-white/10 text-black' : 'bg-white/10 text-white') : ''} ${suppressNavHover ? '' : showMenu ? 'hover:bg-white/10 hover:text-black' : 'hover:bg-white/10 hover:text-white'} mt-2 md:mt-0`}
                   onClick={(e) => {
                     e.preventDefault();
                     setActiveNav('fitur');
@@ -495,11 +482,12 @@ const Hero = () => {
                 </a>
                 <a
                   href="#harga"
-                  className={`rounded px-5 py-2 transition-colors cursor-pointer text-white ${activeNav === 'harga' ? 'bg-white/10 text-white' : ''} hover:bg-white/10 hover:text-white mt-2 md:mt-0`}
+                  className={`rounded px-5 py-2 transition-colors cursor-pointer ${showMenu ? 'text-black' : 'text-white'} ${activeNav === 'harga' ? (showMenu ? 'bg-white/10 text-black' : 'bg-white/10 text-white') : ''} ${suppressNavHover ? '' : showMenu ? 'hover:bg-white/10 hover:text-black' : 'hover:bg-white/10 hover:text-white'} mt-2 md:mt-0`}
                   onClick={(e) => {
                     e.preventDefault();
                     setActiveNav('harga');
                     setActiveDropdown(null);
+                    // Scroll to the span with id="harga" (Harga Termurah di Kelasnya)
                     const hargaSection = document.getElementById('harga');
                     if (hargaSection) {
                       const navbar = document.querySelector('.fixed.top-0');
@@ -519,7 +507,7 @@ const Hero = () => {
                   style={{ display: 'inline-flex' }}
                 >
                   <button
-                    className={`rounded px-5 py-2 transition-colors flex items-center justify-center focus:outline-none bg-transparent text-white border border-transparent group ${activeNav === 'pelajari' ? 'bg-white/10 text-white' : ''} hover:bg-white/10 hover:text-white mt-2 md:mt-0`}
+                    className={`rounded px-5 py-2 transition-colors flex items-center justify-center focus:outline-none bg-transparent ${showMenu ? 'text-black' : 'text-white'} border border-transparent group mt-2 md:mt-0 ${activeDropdown === 'pelajari' ? (showMenu ? 'bg-white/10 text-black' : 'bg-white/10 text-white') : ''}`}
                     type="button"
                     onClick={() => {
                       setActiveDropdown(
@@ -527,15 +515,38 @@ const Hero = () => {
                       );
                       setActiveNav('pelajari');
                     }}
-                    onMouseEnter={() => openDropdown('pelajari')}
-                    onMouseLeave={() => closeDropdown('pelajari')}
-                    onFocus={() => openDropdown('pelajari')}
-                    onBlur={() => closeDropdown('pelajari')}
+                    onMouseEnter={
+                      typeof window !== 'undefined' && window.innerWidth >= 768
+                        ? () => {
+                            setSuppressNavHover(true);
+                            openDropdown('pelajari');
+                          }
+                        : undefined
+                    }
+                    onMouseLeave={
+                      typeof window !== 'undefined' && window.innerWidth >= 768
+                        ? () => {
+                            setSuppressNavHover(false);
+                            closeDropdown('pelajari');
+                          }
+                        : undefined
+                    }
+                    onFocus={
+                      typeof window !== 'undefined' && window.innerWidth >= 768
+                        ? () => openDropdown('pelajari')
+                        : undefined
+                    }
+                    onBlur={
+                      typeof window !== 'undefined' && window.innerWidth >= 768
+                        ? () => closeDropdown('pelajari')
+                        : undefined
+                    }
                   >
                     Pelajari
                     <svg
                       className={[
-                        'ml-1 h-4 w-4 text-white group-hover:text-white transform transition-transform duration-200',
+                        'ml-1 h-4 w-4 transform transition-transform duration-200',
+                        showMenu ? 'text-black' : 'text-white',
                         activeDropdown === 'pelajari'
                           ? 'rotate-180'
                           : 'rotate-0',
@@ -559,14 +570,18 @@ const Hero = () => {
                           clearTimeout(closeTimeoutRef.current);
                           closeTimeoutRef.current = null;
                         }
+                        setSuppressNavHover(true);
                       }}
-                      onMouseLeave={() => closeDropdown('pelajari')}
+                      onMouseLeave={() => {
+                        setSuppressNavHover(false);
+                        closeDropdown('pelajari');
+                      }}
                     >
                       <ul className="py-2 px-2 text-center">
                         <li>
                           <Link
                             href="/pelajari/student"
-                            className="block px-4 py-2 font-semibold border-b border-gray-100 hover:bg-blue-800 hover:text-white rounded-t-xl"
+                            className="block px-4 py-2 font-semibold border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded-t-xl"
                           >
                             Siswa
                           </Link>
@@ -574,7 +589,7 @@ const Hero = () => {
                         <li>
                           <Link
                             href="/pelajari/teacher"
-                            className="block px-4 py-2 font-semibold border-b border-gray-100 hover:bg-blue-800 hover:text-white rounded"
+                            className="block px-4 py-2 font-semibold border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded"
                           >
                             Guru
                           </Link>
@@ -582,19 +597,19 @@ const Hero = () => {
                         <li>
                           <Link
                             href="/pelajari/school"
-                            className="block px-4 py-2 font-semibold border-b border-gray-100 hover:bg-blue-800 hover:text-white rounded"
+                            className="block px-4 py-2 font-semibold border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded-b-xl"
                           >
                             Sekolah
                           </Link>
                         </li>
-                        <li>
+                        {/* <li>
                           <Link
                             href="/pelajari/university"
-                            className="block px-4 py-2 font-semibold hover:bg-blue-800 hover:text-white rounded-b-xl"
+                            className="block px-4 py-2 font-semibold hover:bg-[#5e21df] hover:text-white rounded-b-xl"
                           >
                             Kampus
                           </Link>
-                        </li>
+                        </li> */}
                       </ul>
                     </div>
                   )}
@@ -603,13 +618,23 @@ const Hero = () => {
               <div className="flex space-x-3">
                 <a
                   href="/auth/login"
-                  className="rounded border border-white-600 px-5 py-2 text-white"
+                  className={`rounded px-5 py-2 ${showMenu ? 'border border-black text-black hover:bg-black hover:text-white' : 'border border-white-600 text-white hover:bg-white hover:text-black'}`}
                 >
                   Masuk
                 </a>
+
+                {/* Button Mobile */}
+                <a
+                  href="/auth/register"
+                  className="rounded bg-[#6123e3] px-5 py-2 text-white md:hidden hover:bg-[#4b18b3] hover:text-white transition-colors"
+                >
+                  Coba Gratis
+                </a>
+
+                {/* Button Desktop */}
                 <StarButton
                   href="/auth/register"
-                  className="rounded border border-white/40 border-[1px] px-3 py-1.5 text-base"
+                  className={`rounded border border-white border-[1px] px-3 py-1.5 text-base hidden md:inline-block ${showMenu ? 'border border-black text-black hover:bg-black hover:text-white' : 'border border-white-600 text-black hover:bg-transparent hover:text-white'}`}
                   disableStars
                 >
                   Coba Gratis

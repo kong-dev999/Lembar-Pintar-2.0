@@ -65,12 +65,12 @@ const Particles: React.FC<ParticlesProps> = ({
   quantity = 180,
   staticity = 40,
   ease = 36,
-  size = 0.9,
+  size = 0.5,
   refresh = false,
   color = '#ffffff',
   // add a subtle drift so particles slowly move across the hero
   vx = 0.10,
-  vy = -0.01,
+  vy = -0.5,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const canvasContainerRef = useRef<HTMLDivElement>(null)

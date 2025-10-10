@@ -19,7 +19,7 @@ const StarButton: React.FC<StarButtonProps> = ({
     <button
       type="button"
       className={
-        `group relative px-[35px] py-[12px] text-[17px] font-medium text-[#111827] bg-white border-[3px] border-white rounded-md shadow-[0_0_0_rgba(0,0,0,0.08)] transition-all duration-300 ease-in-out cursor-pointer hover:bg-transparent hover:text-[#ffffff] hover:shadow-[0_0_25px_#ffffff] active:scale-95 ${className ?? ''}`
+        `group relative px-[30px] py-[8px] text-[17px] font-medium text-[#111827] bg-white border-[3px] border-white rounded-md shadow-[0_0_0_rgba(0,0,0,0.08)] transition-all duration-300 ease-in-out cursor-pointer hover:bg-transparent hover:text-[#ffffff] hover:shadow-[0_0_25px_#ffffff] active:scale-95 ${className ?? ''}`
       }
       onClick={onClick}
     >

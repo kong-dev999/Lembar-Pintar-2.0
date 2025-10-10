@@ -49,7 +49,7 @@ export default function TemplateShowcase() {
                 'Buat Materi, Poster, dan Ciptakan Karya Sekolahmu Sendiri dalam Hitungan Menit'
               }
               className={
-                'text-2xl sm:text-3xl md:text-4xl font-extrabold flecha-medium tracking-tight text-white'
+                'text-lg sm:text-2xl md:text-4xl font-extrabold flecha-medium tracking-tight text-white'
               }
             />
           </div>

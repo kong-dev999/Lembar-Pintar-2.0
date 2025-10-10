@@ -102,7 +102,10 @@ export default function Pricing() {
       <div className="max-w-6xl mx-auto px-6">
         <Particles className="absolute inset-0" />
         <div className="text-center mb-8 space-y-4 md:space-y-4">
-          <span className="inline-flex items-center rounded-full bg-white text-black px-4 py-1.5 text-sm font-semibold uppercase tracking-wide">
+          <span
+            id="harga"
+            className="inline-flex items-center rounded-full bg-white text-black px-4 py-1.5 text-sm font-semibold uppercase tracking-wide"
+          >
             Harga Termurah di Kelasnya
           </span>
           <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl ">

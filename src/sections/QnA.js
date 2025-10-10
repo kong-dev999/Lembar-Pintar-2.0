@@ -45,7 +45,13 @@ function QnA() {
   };
 
   return (
-    <div id="QnA">
+    <div
+      id="QnA"
+      style={{
+        background:
+          'linear-gradient(180deg,#050610 0%, #22063a 26%,#6b22ff 50%, #6b22ff 70%, #3b0a66 100%)',
+      }}
+    >
       {/* FAQ Section */}
       <div className="max-w-4xl mx-auto my-12">
         <h3 className="text-3xl font-bold text-center text-slate-900 mb-8">
@@ -53,12 +59,17 @@ function QnA() {
         </h3>
         <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div key={index} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+            <div
+              key={index}
+              className="bg-white rounded-xl border border-slate-200 overflow-hidden"
+            >
               <button
                 onClick={() => toggleFaq(index)}
                 className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-slate-50 transition-colors"
               >
-                <span className="font-semibold text-slate-900 pr-4">{faq.question}</span>
+                <span className="font-semibold text-slate-900 pr-4">
+                  {faq.question}
+                </span>
                 <ChevronDown
                   className={`w-5 h-5 text-slate-500 transition-transform flex-shrink-0 ${openFaq === index ? 'rotate-180' : ''}`}
                 />
