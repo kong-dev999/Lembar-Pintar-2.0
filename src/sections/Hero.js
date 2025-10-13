@@ -17,22 +17,6 @@ const Hero = () => {
   const closeTimeoutRef = useRef(null);
   const submenuCloseTimeoutRef = useRef(null);
 
-  const scheduleCloseSubmenu = () => {
-    if (submenuCloseTimeoutRef.current)
-      clearTimeout(submenuCloseTimeoutRef.current);
-    submenuCloseTimeoutRef.current = setTimeout(() => {
-      setActiveSubmenu(null);
-      submenuCloseTimeoutRef.current = null;
-    }, 150);
-  };
-
-  const cancelCloseSubmenu = () => {
-    if (submenuCloseTimeoutRef.current) {
-      clearTimeout(submenuCloseTimeoutRef.current);
-      submenuCloseTimeoutRef.current = null;
-    }
-  };
-
   const toggleMenu = () => setMenuVisibility((v) => !v);
   // open dropdowns on hover for better desktop UX
   const openDropdown = (name) => {
@@ -47,6 +31,14 @@ const Hero = () => {
     if (name === 'template' || name === 'pelajari') setSuppressNavHover(true);
   };
   const closeDropdown = (name) => {
+    if (activeSubmenu) {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+        closeTimeoutRef.current = null;
+      }
+      return;
+    }
+
     // schedule a short delay before closing so users can move pointer into the menu
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
     closeTimeoutRef.current = setTimeout(() => {
@@ -81,15 +73,19 @@ const Hero = () => {
     function handleDocumentClick(e) {
       if (!activeDropdown) return;
       const target = e.target;
-      // if click is outside the nav container, close any open dropdowns
       if (
-        navContainerRef.current &&
-        !navContainerRef.current.contains(target)
+        (navContainerRef.current && navContainerRef.current.contains(target)) ||
+        (dropdownRef.current && dropdownRef.current.contains(target)) ||
+        (templateButtonRef.current &&
+          templateButtonRef.current.contains(target))
       ) {
-        setActiveDropdown(null);
-        setActiveSubmenu(null);
-        setSuppressNavHover(false);
+        return;
       }
+
+      // otherwise close any open dropdowns
+      setActiveDropdown(null);
+      setActiveSubmenu(null);
+      setSuppressNavHover(false);
     }
 
     function handleKeyDown(e) {
@@ -101,9 +97,12 @@ const Hero = () => {
     }
 
     document.addEventListener('mousedown', handleDocumentClick);
+    // also listen for touchstart so mobile taps are handled the same way
+    document.addEventListener('touchstart', handleDocumentClick);
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('mousedown', handleDocumentClick);
+      document.removeEventListener('touchstart', handleDocumentClick);
       document.removeEventListener('keydown', handleKeyDown);
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
@@ -121,7 +120,7 @@ const Hero = () => {
       className="relative overflow-hidden"
       style={{
         background:
-          'linear-gradient(180deg,#050610 0%, #22063a 26%,#6b22ff 50%, #6b22ff 70%, #3b0a66 100%)',
+          'linear-gradient(180deg, #000000 0%, #22063a 26%,#6b22ff 50%, #6b22ff 70%, #3b0a66 100%)',
       }}
     >
       {/* full-bleed overlays so gradient/rays/vignette span the full width */}
@@ -132,10 +131,10 @@ const Hero = () => {
       </div>
       {/* NAV */}
       <div
-        className="fixed top-0 left-0 w-full z-50 shadow-sm"
+        className="fixed top-0 left-0 w-full z-50"
         style={{
           top: '0px',
-          paddingBottom: '10px',
+          paddingBottom: '8px',
           background: showTopGradient
             ? 'transparent'
             : 'linear-gradient(180deg, #040432ff 42%, #4a0db4ff 95%)',
@@ -159,7 +158,7 @@ const Hero = () => {
                 />
               </div>
               {/* Brand text */}
-              <span className="leading-none -ml-1 mt-4">
+              <span className="leading-none -ml-1 mt-2">
                 <span className="block text-[22px] md:text-[28px] font-extrabold tracking-tight text-white">
                   Lembar{' '}
                   <span className="bg-gradient-to-r bg-clip-text text-white">
@@ -191,10 +190,7 @@ const Hero = () => {
                 ref={navContainerRef}
                 className="flex w-full flex-col text-center md:w-auto md:flex-row md:space-x-3"
               >
-                <div
-                  className="relative flex justify-center w-full md:w-auto"
-                  style={{ display: 'inline-flex' }}
-                >
+                <div className="relative flex justify-center w-full md:w-auto">
                   <a
                     href="#QnA"
                     className={`rounded px-5 py-2 transition-colors cursor-pointer ${showMenu ? 'text-black' : 'text-white'} ${activeNav === 'KasusPenggunaan' ? (showMenu ? 'bg-white/10 text-black' : 'bg-white/10 text-white') : ''} ${suppressNavHover ? '' : showMenu ? 'hover:bg-white/10 hover:text-black' : 'hover:bg-white/10 hover:text-white'} mt-2 md:mt-0`}
@@ -220,10 +216,7 @@ const Hero = () => {
                     QnA
                   </a>
                 </div>
-                <div
-                  className="relative flex justify-center w-full md:w-auto"
-                  style={{ display: 'inline-flex' }}
-                >
+                <div className="relative flex justify-center w-full md:w-auto">
                   <button
                     className={`rounded px-5 py-2 transition-colors flex items-center justify-center focus:outline-none bg-transparent ${showMenu ? 'text-black' : 'text-white'} border border-transparent group mt-2 md:mt-0 ${activeDropdown === 'template' ? (showMenu ? 'bg-white/10 text-black' : 'bg-white/10 text-white') : ''}`}
                     type="button"
@@ -301,16 +294,21 @@ const Hero = () => {
                         <li className="relative">
                           <button
                             className="w-full flex items-center justify-between px-4 py-3 font-semibold border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded-t-xl focus:outline-none"
-                            onClick={() =>
+                            onClick={() => {
+                              // cancel any pending close timers so click reliably toggles submenu
+                              if (closeTimeoutRef.current) {
+                                clearTimeout(closeTimeoutRef.current);
+                                closeTimeoutRef.current = null;
+                              }
+                              if (submenuCloseTimeoutRef.current) {
+                                clearTimeout(submenuCloseTimeoutRef.current);
+                                submenuCloseTimeoutRef.current = null;
+                              }
+                              setActiveDropdown('template');
                               setActiveSubmenu(
                                 activeSubmenu === 'tk' ? null : 'tk'
-                              )
-                            }
-                            onMouseEnter={() => {
-                              cancelCloseSubmenu();
-                              setActiveSubmenu('tk');
+                              );
                             }}
-                            onMouseLeave={() => scheduleCloseSubmenu()}
                           >
                             <span className="w-full text-center">TK</span>
                           </button>
@@ -318,8 +316,6 @@ const Hero = () => {
                             <div
                               className="absolute top-0 left-full ml-2 min-w-fit w-auto rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
                               style={{ borderRadius: '1rem' }}
-                              onMouseEnter={() => cancelCloseSubmenu()}
-                              onMouseLeave={() => scheduleCloseSubmenu()}
                             >
                               <ul className="py-2 px-2 text-center min-w-fit w-auto">
                                 {['A', 'B'].map((kelas, idx) => (
@@ -340,16 +336,20 @@ const Hero = () => {
                         <li className="relative">
                           <button
                             className="w-full flex items-center justify-between px-4 py-3 font-semibold border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded focus:outline-none"
-                            onClick={() =>
+                            onClick={() => {
+                              if (closeTimeoutRef.current) {
+                                clearTimeout(closeTimeoutRef.current);
+                                closeTimeoutRef.current = null;
+                              }
+                              if (submenuCloseTimeoutRef.current) {
+                                clearTimeout(submenuCloseTimeoutRef.current);
+                                submenuCloseTimeoutRef.current = null;
+                              }
+                              setActiveDropdown('template');
                               setActiveSubmenu(
                                 activeSubmenu === 'sd' ? null : 'sd'
-                              )
-                            }
-                            onMouseEnter={() => {
-                              cancelCloseSubmenu();
-                              setActiveSubmenu('sd');
+                              );
                             }}
-                            onMouseLeave={() => scheduleCloseSubmenu()}
                           >
                             <span className="w-full text-center">SD</span>
                           </button>
@@ -357,8 +357,6 @@ const Hero = () => {
                             <div
                               className="absolute top-0 left-full ml-2 min-w-fit w-auto rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
                               style={{ borderRadius: '1rem' }}
-                              onMouseEnter={() => cancelCloseSubmenu()}
-                              onMouseLeave={() => scheduleCloseSubmenu()}
                             >
                               <ul className="py-2 px-2 text-center min-w-fit w-auto">
                                 {[1, 2, 3, 4, 5, 6].map((kelas) => (
@@ -379,16 +377,20 @@ const Hero = () => {
                         <li className="relative">
                           <button
                             className="w-full flex items-center justify-between px-4 py-3 font-semibold border-b border-gray-100 hover:bg-[#5e21df] hover:text-white rounded focus:outline-none"
-                            onClick={() =>
+                            onClick={() => {
+                              if (closeTimeoutRef.current) {
+                                clearTimeout(closeTimeoutRef.current);
+                                closeTimeoutRef.current = null;
+                              }
+                              if (submenuCloseTimeoutRef.current) {
+                                clearTimeout(submenuCloseTimeoutRef.current);
+                                submenuCloseTimeoutRef.current = null;
+                              }
+                              setActiveDropdown('template');
                               setActiveSubmenu(
                                 activeSubmenu === 'smp' ? null : 'smp'
-                              )
-                            }
-                            onMouseEnter={() => {
-                              cancelCloseSubmenu();
-                              setActiveSubmenu('smp');
+                              );
                             }}
-                            onMouseLeave={() => scheduleCloseSubmenu()}
                           >
                             <span className="w-full text-center">SMP</span>
                           </button>
@@ -396,8 +398,6 @@ const Hero = () => {
                             <div
                               className="absolute top-0 left-full ml-2 min-w-fit w-auto rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
                               style={{ borderRadius: '1rem' }}
-                              onMouseEnter={() => cancelCloseSubmenu()}
-                              onMouseLeave={() => scheduleCloseSubmenu()}
                             >
                               <ul className="py-2 px-2 text-center min-w-fit w-auto">
                                 {[7, 8, 9].map((kelas) => (
@@ -418,16 +418,20 @@ const Hero = () => {
                         <li className="relative">
                           <button
                             className="w-full flex items-center justify-between px-4 py-3 font-semibold hover:bg-[#5e21df] hover:text-white rounded-b-xl focus:outline-none"
-                            onClick={() =>
+                            onClick={() => {
+                              if (closeTimeoutRef.current) {
+                                clearTimeout(closeTimeoutRef.current);
+                                closeTimeoutRef.current = null;
+                              }
+                              if (submenuCloseTimeoutRef.current) {
+                                clearTimeout(submenuCloseTimeoutRef.current);
+                                submenuCloseTimeoutRef.current = null;
+                              }
+                              setActiveDropdown('template');
                               setActiveSubmenu(
                                 activeSubmenu === 'sma' ? null : 'sma'
-                              )
-                            }
-                            onMouseEnter={() => {
-                              cancelCloseSubmenu();
-                              setActiveSubmenu('sma');
+                              );
                             }}
-                            onMouseLeave={() => scheduleCloseSubmenu()}
                           >
                             <span className="w-full text-center">SMA</span>
                           </button>
@@ -435,8 +439,6 @@ const Hero = () => {
                             <div
                               className="absolute top-0 left-full ml-2 min-w-fit w-auto rounded-2xl bg-white text-slate-900 shadow-lg z-50 border border-gray-200"
                               style={{ borderRadius: '1rem' }}
-                              onMouseEnter={() => cancelCloseSubmenu()}
-                              onMouseLeave={() => scheduleCloseSubmenu()}
                             >
                               <ul className="py-2 px-2 text-center min-w-fit w-auto">
                                 {[10, 11, 12].map((kelas) => (
@@ -502,10 +504,7 @@ const Hero = () => {
                 >
                   Harga
                 </a>
-                <div
-                  className="relative flex justify-center w-full md:w-auto"
-                  style={{ display: 'inline-flex' }}
-                >
+                <div className="relative flex justify-center w-full md:w-auto">
                   <button
                     className={`rounded px-5 py-2 transition-colors flex items-center justify-center focus:outline-none bg-transparent ${showMenu ? 'text-black' : 'text-white'} border border-transparent group mt-2 md:mt-0 ${activeDropdown === 'pelajari' ? (showMenu ? 'bg-white/10 text-black' : 'bg-white/10 text-white') : ''}`}
                     type="button"
@@ -602,14 +601,6 @@ const Hero = () => {
                             Sekolah
                           </Link>
                         </li>
-                        {/* <li>
-                          <Link
-                            href="/pelajari/university"
-                            className="block px-4 py-2 font-semibold hover:bg-[#5e21df] hover:text-white rounded-b-xl"
-                          >
-                            Kampus
-                          </Link>
-                        </li> */}
                       </ul>
                     </div>
                   )}

@@ -1,9 +1,13 @@
-import Link from "next/link";
-import Image from "next/image";
+import Link from 'next/link';
+import Image from 'next/image';
 
 const Footer = () => {
   return (
-    <footer className="relative w-full bg-gradient-to-b from-slate-50 to-white border-t border-slate-200">
+    <footer
+      style={{
+        background: 'linear-gradient( #020202ff 100%)',
+      }}
+    >
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Kiri: Brand */}
@@ -16,21 +20,19 @@ const Footer = () => {
                 height={36}
                 className="h-9 w-9"
               />
-              <span className="text-xl font-bold text-slate-900">
+              <span className="text-xl font-bold text-white">
                 Lembar Pintar
               </span>
             </div>
-            <p className="mt-4 max-w-xs text-center text-sm text-slate-500 md:text-left">
+            <p className="mt-4 max-w-xs text-center text-sm text-white md:text-left">
               Platform desain edukasi modern untuk guru, siswa, dan kreator.
             </p>
           </div>
 
           {/* Tengah: Navigasi */}
           <div className="flex flex-col items-center md:items-center">
-            <h3 className="text-sm font-semibold text-slate-700 mb-3">
-              Navigasi
-            </h3>
-            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm font-medium text-slate-600">
+            <h3 className="text-sm font-semibold text-white mb-3">Navigasi</h3>
+            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm font-medium text-white">
               <Link
                 href="/about"
                 className="hover:text-blue-600 transition-colors duration-200"
@@ -66,7 +68,7 @@ const Footer = () => {
 
           {/* Kanan: Sosial */}
           <div className="flex flex-col items-center md:items-end">
-            <h3 className="text-sm font-semibold text-slate-700 mb-3">
+            <h3 className="text-sm font-semibold text-white mb-3">
               Ikuti Kami
             </h3>
             <div className="flex gap-4">
@@ -176,7 +178,7 @@ const Footer = () => {
 
             {/* Email Subscription (Optional) */}
             <div className="mt-6 w-full max-w-xs hidden md:block">
-              <p className="text-xs text-slate-500 mb-2 text-right">
+              <p className="text-xs text-white mb-2 text-right">
                 Berlangganan newsletter
               </p>
               <div className="flex gap-2">
@@ -195,26 +197,26 @@ const Footer = () => {
 
         {/* Divider */}
         <div className="mt-10 border-t border-slate-200 pt-6 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-white">
             &copy; {new Date().getFullYear()} Lembar Pintar. Semua hak cipta
             dilindungi.
           </p>
           <div className="flex gap-4 mt-4 md:mt-0">
             <Link
               href="/privacy"
-              className="text-xs text-slate-500 hover:text-blue-600"
+              className="text-xs text-white hover:text-blue-600"
             >
               Kebijakan Privasi
             </Link>
             <Link
               href="/terms"
-              className="text-xs text-slate-500 hover:text-blue-600"
+              className="text-xs text-white hover:text-blue-600"
             >
               Syarat & Ketentuan
             </Link>
             <Link
               href="/contact"
-              className="text-xs text-slate-500 hover:text-blue-600"
+              className="text-xs text-white hover:text-blue-600"
             >
               Kontak
             </Link>

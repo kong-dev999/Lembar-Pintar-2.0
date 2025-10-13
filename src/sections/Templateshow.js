@@ -35,21 +35,21 @@ const ROWS = [
 export default function TemplateShowcase() {
   return (
     <section
-      className="relative w-full py-16 sm:py-8 md:py-6"
+      className="relative w-full pt-0 pb-16 sm:pt-4 sm:pb-8 md:pt-6 md:pb-6"
       style={{
         background:
-          'linear-gradient(180deg, #1f0940 20%, #660dffff 42%, #040432ff 60%, #660dffff 78%, #1f0940 95%)',
+          'linear-gradient(180deg, #1f0940 20%, #660dffff 42%, #040432ff 60%, #660dffff 78%, #1f0940 90%)',
       }}
     >
       <div className="mx-auto max-w-7xl px-2">
-        <div className="mb-8 text-center">
+        <div className="mb-2 sm:mb-6 md:mb-8 text-center">
           <div className="inline-block">
             <SparklesText
               text={
                 'Buat Materi, Poster, dan Ciptakan Karya Sekolahmu Sendiri dalam Hitungan Menit'
               }
               className={
-                'text-lg sm:text-2xl md:text-4xl font-extrabold flecha-medium tracking-tight text-white'
+                'text-xl sm:text-2xl md:text-4xl font-extrabold flecha-medium tracking-tight text-white'
               }
             />
           </div>
@@ -115,14 +115,14 @@ function Card({ src, alt }) {
 
   return (
     <div className="mx-3 shrink-0 overflow-hidden rounded-xl bg-white/10 ring-1 ring-white/10 shadow-lg transition-transform duration-300 hover:scale-105">
-      <div className="h-[180px] w-[380px] md:h-[200px] md:w-[420px] relative">
+      <div className="h-[120px] w-[220px] md:h-[150px] md:w-[280px] relative">
         {!imgError ? (
           <Image
             src={src}
             alt={alt}
             fill
             className="object-cover"
-            sizes="(max-width: 768px) 280px, 320px"
+            sizes="(max-width: 768px) 180px, 220px"
             onError={() => setImgError(true)}
           />
         ) : (

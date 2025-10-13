@@ -48,13 +48,12 @@ function QnA() {
     <div
       id="QnA"
       style={{
-        background:
-          'linear-gradient(180deg,#050610 0%, #22063a 26%,#6b22ff 50%, #6b22ff 70%, #3b0a66 100%)',
+        background: 'linear-gradient(180deg, #19062aff  10%, #4d08ccff 100%)',
       }}
     >
       {/* FAQ Section */}
       <div className="max-w-4xl mx-auto my-12">
-        <h3 className="text-3xl font-bold text-center text-slate-900 mb-8">
+        <h3 className="text-3xl text-white font-bold text-center text-slate-900 mb-8">
           Pertanyaan yang Sering Diajukan
         </h3>
         <div className="space-y-4">

@@ -6,14 +6,14 @@ import { useState, useEffect } from 'react';
 const testimonials = [
   {
     name: 'Dr. Aisyah Putri',
-    role: 'Guru SMA — Jakarta',
+    role: 'Guru SMA — Nganjuk',
     quote:
       'Saya bisa menyiapkan materi kelas dalam hitungan menit. Siswa jauh lebih antusias karena tampilannya modern dan interaktif.',
     img: '/images/gender/female.png',
   },
   {
     name: 'Rian Mahendra',
-    role: 'Dosen — Bandung',
+    role: 'Dosen — Kediri',
     quote:
       'Kolaborasi realtime dan Template AI sangat menghemat waktu. Saya bisa fokus mengajar, bukan pusing soal desain.',
     img: '/images/gender/male.png',
@@ -34,7 +34,7 @@ const testimonials = [
   },
   {
     name: 'Maya Prameswari',
-    role: 'Wali Kelas — Depok',
+    role: 'Guru TK — Nganjuk',
     quote:
       'Integrasi dengan Google membuat alur kerja kami super mulus. Satu klik, semua tersinkron.',
     img: '/images/gender/female.png',
@@ -54,13 +54,6 @@ const testimonials = [
     img: '/images/gender/female.png',
   },
   {
-    name: 'Gilang Ramadhan',
-    role: 'Tutor Privat',
-    quote:
-      'Fitur AI Assist itu game changer—ide materi mengalir, tinggal disesuaikan kebutuhan.',
-    img: '/images/gender/male.png',
-  },
-  {
     name: 'Nadia Larasati',
     role: 'Guru BK — Semarang',
     quote:
@@ -69,7 +62,7 @@ const testimonials = [
   },
   {
     name: 'Reza Alfian',
-    role: 'Pengawas Sekolah',
+    role: 'Guru SD - Nganjuk',
     quote:
       'Tim bisa kolaborasi tanpa ribet. Revisi cepat, arsip rapi, dan tanpa watermark di Pro.',
     img: '/images/gender/male.png',
@@ -77,7 +70,7 @@ const testimonials = [
 ];
 
 export default function Testimonial() {
-  const [visibleCount, setVisibleCount] = useState(4);
+  const [visibleCount, setVisibleCount] = useState(6);
   const [showAll, setShowAll] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -85,8 +78,7 @@ export default function Testimonial() {
   useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth < 768);
-      // Show 4 initially for all screen sizes
-      setVisibleCount(4);
+      setVisibleCount(6);
     };
 
     checkScreenSize();
@@ -96,7 +88,7 @@ export default function Testimonial() {
 
   const handleLoadMore = () => {
     if (showAll) {
-      setVisibleCount(4);
+      setVisibleCount(6);
       setShowAll(false);
     } else {
       setVisibleCount(testimonials.length);
@@ -111,7 +103,7 @@ export default function Testimonial() {
       className="relative w-full bg-gradient-to-b from-slate-50 to-white py-8 sm:py-12 md:py-12 lg:py-2"
       style={{
         background:
-          'linear-gradient(180deg,#050610 5%, #22063a 25%, #2b0675ff 70%, #f7f7f7ff 100%)',
+          'linear-gradient(180deg,#050610 5%, #22063a 25%, #3b09a0ff 60%, #19062aff 100%)',
       }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -125,7 +117,7 @@ export default function Testimonial() {
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
             Suara Pengguna{' '}
-            <span className="bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#2763eb] to-[#2763eb] bg-clip-text text-transparent">
               Lembar Pintar
             </span>
           </h2>
@@ -227,7 +219,7 @@ export default function Testimonial() {
           </AnimatePresence>
 
           {/* Load More Button */}
-          {testimonials.length > 4 && (
+          {testimonials.length > 6 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

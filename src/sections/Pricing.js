@@ -16,41 +16,43 @@ const plans = (yearly) => [
     highlight: false,
     features: [
       'Ribuan template dasar',
-      'Export PNG (720p)',
       '10 proyek aktif',
-      '5 kredit AI Assist / bln',
+      'Penyimpanan cloud 500MB',
+      'Akses ke ilustrasi dan ikon dasar',
       'Tanpa kartu kredit',
     ],
   },
   {
     name: 'Pro',
-    badge: 'Paling Populer',
-    price: yearly ? 'Rp35.000' : 'Rp30.000',
-    suffix: yearly ? '/bln (tagihan tahunan)' : '/bln',
+    badge: 'Rekomendasi',
+    price: yearly ? 'Rp400.000' : 'Rp35.000',
+    suffix: yearly ? '/thn' : '/bln',
     cta: 'Upgrade ke Pro',
     href: '/checkout?plan=pro',
     highlight: true,
     features: [
-      'Semua di Free',
-      'Export PNG/PDF (1080p)',
-      'Tak terbatas proyek',
+      'Akses ke semua template gratis',
+      'Proyek desain tanpa batas',
       'Brand Kit & Font kustom',
-      '50 kredit AI Assist / bln',
-      'Scheduler Post (IG/TikTok)',
-      'Tanpa watermark',
+      'Tanpa watermark di hasil desain',
+      'Penyimpanan cloud hingga 15GB',
+      'Ekspor ke PDF, PNG, dan PowerPoint',
+      'Akses ke ribuan ikon & ilustrasi edukatif',
     ],
   },
   {
     name: 'Premium',
     badge: 'Untuk Sekolah/Tim',
     price: yearly ? 'Custom' : 'Rp200.000',
-    suffix: yearly ? '/user/bln (tahunan)' : '/user/bln',
-    cta: 'Hubungi Penjualan',
+    suffix: yearly ? '/user/thn' : '/user/bln',
+    cta: yearly ? 'Hubungi Penjualan' : 'Uprage ke Premium',
     href: '/contact',
     highlight: false,
     features: [
-      'Semua di Pro',
+      'Semua fitur PRO',
       'Kolaborasi realtime',
+      'Akses ke seluruh template & aset premium',
+      'Penyimpanan cloud tanpa batas',
       'Folder & izin anggota',
       'Template institusi',
       'SSO (Google Workspace)',
@@ -96,7 +98,7 @@ export default function Pricing() {
       style={{
         // top stop changed from near-black to a brighter purple to remove the black band
         background:
-          'linear-gradient(180deg, #1f0940 5%,  #540fcbff 80%, #050610 100%)',
+          'linear-gradient(180deg, #1f0940 5%,  #540fcbff 90%, #050610 100%)',
       }}
     >
       <div className="max-w-6xl mx-auto px-6">
@@ -123,7 +125,7 @@ export default function Pricing() {
           {plans(isYearly).map((plan) => (
             <div
               key={plan.name}
-              className={`relative flex h-full flex-col overflow-hidden rounded-2xl p-6 ${plan.highlight ? 'border-2 border-blue-600 ring-1 ring-blue-500/30 shadow-xl shadow-blue-800/20 bg-gradient-to-b from-neutral-800 to-neutral-900' : 'border border-neutral-800 bg-neutral-900'}`}
+              className={`relative flex h-full flex-col overflow-hidden rounded-2xl p-6 ${plan.highlight ? 'border-2 border-blue-600 ring-2 ring-blue-500/30 shadow-xl shadow-blue-800/20 bg-gradient-to-b from-neutral-800 to-neutral-900' : 'border border-neutral-800 bg-neutral-900'}`}
             >
               {plan.highlight && (
                 <div className="absolute right-4 top-4 rounded-full bg-gradient-to-r from-blue-600 to-indigo-500 px-3 py-1 text-xs font-semibold text-white shadow">
@@ -133,7 +135,9 @@ export default function Pricing() {
 
               <div className="pb-4">
                 <h3 className="text-xl font-bold">{plan.name}</h3>
-                <p className="text-gray-300 mt-1">{plan.badge}</p>
+                <p className="inline-flex items-center rounded-full bg-white text-black px-4 py-1 text-xs font-semibold mt-2">
+                  {plan.name === 'Pro' ? 'Paling Populer' : plan.badge}
+                </p>
                 <div className="mt-4 flex items-baseline gap-3">
                   <span className="text-4xl font-extrabold">{plan.price}</span>
                   <span className="text-gray-400">{plan.suffix}</span>
@@ -154,7 +158,7 @@ export default function Pricing() {
               <div className="mt-6">
                 <Link
                   href={plan.href || '#'}
-                  className={`inline-flex w-full items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold transition no-underline hover:no-underline focus:no-underline hover:text-white ${plan.highlight ? 'bg-gradient-to-r from-blue-600 to-indigo-500 text-white' : 'border border-neutral-700 text-white'}`}
+                  className="relative z-10 inline-flex w-full items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold transition-colors duration-200 no-underline focus:no-underline hover:text-black hover:bg-none hover:bg-white bg-gradient-to-r from-blue-600 to-indigo-500 text-white"
                 >
                   {plan.cta}
                 </Link>
@@ -163,7 +167,7 @@ export default function Pricing() {
           ))}
         </div>
 
-        <p className="mt-6 text-center text-xs text-slate-400">
+        <p className="mt-6 text-center text-xs text-white">
           Harga dapat berubah sewaktu-waktu. Paket Tahunan ditagihkan per tahun.
         </p>
       </div>

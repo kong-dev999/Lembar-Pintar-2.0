@@ -6,7 +6,6 @@ import {
   CallToAction,
   Templateshow,
   Footer,
-  Guides,
   Hero,
   Pricing,
   Testimonial,
@@ -47,7 +46,6 @@ const Home = () => {
       <QnA />
       <CallToAction />
       <Footer />
-      <Guides />
     </LandingLayout>
   );
 };
